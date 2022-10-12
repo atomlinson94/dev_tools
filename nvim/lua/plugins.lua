@@ -69,7 +69,7 @@ function M.setup()
       end,
     }
 
-    -- TODO: Add auto pair
+    -- TODO: Add git plugin
 
     -- WhichKey
     use {
@@ -77,6 +77,12 @@ function M.setup()
        config = function()
          require("config.whichkey").setup()
        end,
+    }
+
+    -- Treesitter
+    -- TODO: Add additional configuration
+    use {
+      "nvim-treesitter/nvim-treesitter",
     }
 
     -- File explorer
@@ -91,6 +97,9 @@ function M.setup()
        end,
     }
 
+    -- TODO: Figure out how to add vim commands
+    -- TODO: Figure out why slow (add packer profiling?)local
+    -- TODO: Figure out completion weirdness
     -- Completion
     use {
       "hrsh7th/nvim-cmp",
@@ -108,6 +117,10 @@ function M.setup()
         "hrsh7th/cmp-calc",
         "f3fora/cmp-spell",
         "hrsh7th/cmp-emoji",
+        "hrsh7th/cmp-nvim-lsp-signature-help",
+        -- "hrsh7th/cmp-calc",
+        -- "f3fora/cmp-spell",
+        -- "hrsh7th/cmp-emoji",
         {
           "L3MON4D3/LuaSnip",
           wants = "friendly-snippets",
@@ -119,7 +132,18 @@ function M.setup()
       },
     }
 
-    -- TODO: Figure out why can't search below directory
+    -- Auto pairs
+    use {
+      "windwp/nvim-autopairs",
+      wants = "nvim-treesitter",
+      module = { "nvim-autopairs.completion.cmp", "nvim-autopairs" },
+      config = function()
+        require("config.autopairs").setup()
+      end,
+    }
+
+    -- TODO: Figure out cached git files don't show up
+    -- TODO: Figure out how to jump between git repositories
     -- Fuzzy file search
     use {
       "nvim-telescope/telescope.nvim",
@@ -150,6 +174,22 @@ function M.setup()
             require("project_nvim").setup {}
           end,
         },
+      },
+    }
+
+    -- LSP
+    use {
+      "neovim/nvim-lspconfig",
+      opt = true,
+      event = "BufReadPre",
+      wants = { "nvim-lsp-installer", "lsp_signature.nvim", "cmp-nvim-lsp" },
+      config = function()
+        require("config.lsp").setup()
+      end,
+      requires = {
+        "williamboman/nvim-lsp-installer",
+        "ray-x/lsp_signature.nvim",
+        "hrsh7th/cmp-nvim-lsp",
       },
     }
 
