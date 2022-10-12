@@ -1,27 +1,35 @@
 #!/user/bin/sh
 
+# TODO: This script could probably use some work...
+
+# Update and upgrade packages
+echo "Update and upgrade packages..."
+sudo apt update && sudo apt upgrade
+
 # Install stow
-echo 'Installing stow...'
+echo "Install stow..."
 sudo apt install -y stow
 
 # Install vim
-echo 'Installing vim...'
+echo "Install vim..."
 sudo apt install -y vim
-
-if ! $(grep 'set -o vi' ~/.bashrc)
-then
-    echo 'set -o vi' >> ~/.bashrc
-fi
 
 stow --restow --target=$HOME vim
 
+# Enable editing shell commands with vi
+if ! $(grep "set -o vi" ~/.bashrc)
+then
+    echo "set -o vi" >> ~/.bashrc
+fi
+
 # Install tmux
-echo 'Installing tmux...'
+echo "Install tmux..."
 sudo apt install -y tmux
 
-# Install TPM (Tmux Plugin Manager)
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
-# TODO: Automatically load plugins
-
 stow --restow --target=$HOME tmux
+
+# If TPM is not installed, download it and install plugins
+if [ ! -d "$HOME/.tmux/plugins/tpm/" ]
+then
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins
+fi
