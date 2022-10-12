@@ -44,9 +44,9 @@ function M.setup()
     -- TODO: Find better color scheme
     -- Colorscheme
     use {
-      "sainnhe/everforest",
+      "EdenEast/nightfox.nvim",
       config = function()
-        vim.cmd "colorscheme everforest"
+        vim.cmd "colorscheme carbonfox"
       end,
     }
 
