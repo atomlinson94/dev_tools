@@ -58,6 +58,8 @@ then
     mkdir $HOME/.config/nvim/
 fi
 
+stow --restow --target=$HOME/.config/nvim nvim
+
 # Reload .bashrc
 echo "Reload .bashrc..."
 source $HOME/.bashrc
