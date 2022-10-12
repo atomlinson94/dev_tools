@@ -16,9 +16,9 @@ sudo apt install -y vim
 
 stow --restow --target=$HOME vim
 
-if ! $(grep 'alias v="vim"' ~/.bashrc)
+if alias "v" >/dev/null 2>&1
 then
-    echo 'alias v="vim"' >> ~/.bashrc
+    echo "alias v='vim'" >> ~/.bashrc
 fi
 
 # Enable editing shell commands with vi
@@ -34,7 +34,7 @@ sudo apt install -y tmux
 stow --restow --target=$HOME tmux
 
 # If TPM is not installed, download it and install plugins
-if ! -d "$HOME/.tmux/plugins/tpm/"
+if [ ! -d "$HOME/.tmux/plugins/tpm/" ]
 then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins
 fi
@@ -48,9 +48,14 @@ wget -O local_nvim_pkg_path https://github.com/neovim/neovim/releases/download/v
 
 sudo dpkg -i local_nvim_pkg_path && rm local_nvim_pkg_path
 
-if ! $(grep 'alias nv="XDG_DATA_HOME=~/.local/share XDG_CONFIG_HOME=~/.config nvim"' ~/.bashrc)
+if alias "nv" >/dev/null 2>&1
 then
-    echo 'alias nv="XDG_DATA_HOME=~/.local/share XDG_CONFIG_HOME=~/.config nvim"' >> ~/.bashrc
+    echo "alias nv='XDG_DATA_HOME=~/.local/share XDG_CONFIG_HOME=~/.config nvim'" >> ~/.bashrc
+fi
+
+if [ ! -d "$HOME/.config/nvim" ]
+then
+    mkdir $HOME/.config/nvim/
 fi
 
 # Reload .bashrc
