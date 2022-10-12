@@ -93,32 +93,41 @@ function M.setup()
 
     -- Completion
     use {
-      "ms-jpq/coq_nvim",
-      branch = "coq",
-      event = "InsertEnter",
-      opt = true,
-      run = ":COQdeps",
+      "hrsh7th/nvim-cmp",
       config = function()
-        require("config.coq").setup()
+        require("config.cmp").setup()
       end,
+      wants = { "LuaSnip" },
       requires = {
-        { "ms-jpq/coq.artifacts", branch = "artifacts" },
-        { "ms-jpq/coq.thirdparty", branch = "3p", module = "coq_3p" },
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-nvim-lua",
+        "ray-x/cmp-treesitter",
+        "hrsh7th/cmp-cmdline",
+        "saadparwaiz1/cmp_luasnip",
+        "hrsh7th/cmp-calc",
+        "f3fora/cmp-spell",
+        "hrsh7th/cmp-emoji",
+        {
+          "L3MON4D3/LuaSnip",
+          wants = "friendly-snippets",
+          config = function()
+            require("config.luasnip").setup()
+          end,
+        },
+        "rafamadriz/friendly-snippets",
       },
-      disable = false,
     }
 
     -- TODO: Figure out why can't search below directory
     -- Fuzzy file search
     use {
       "nvim-telescope/telescope.nvim",
---        opt = true,
       config = function()
         require("config.telescope").setup()
       end,
       cmd = { "Telescope" },
       module = "telescope",
-      keys = { "<leader>f", "<leader>p" },
       wants = {
         "plenary.nvim",
         "popup.nvim",
@@ -143,8 +152,6 @@ function M.setup()
         },
       },
     }
-
-    -- TODO: Consider adding nvim-cmp
 
     if packer_bootstrap then
       print "Restart Neovim required after installation!"

@@ -80,7 +80,7 @@ function M.setup()
         },
       },
       git_files = {
-        theme = "dropdown",
+        theme = "ivy",
         mappings = {
           n = {
             ["y"] = nvb_actions.file_path,
