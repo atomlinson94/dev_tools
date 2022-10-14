@@ -1,6 +1,6 @@
 local M = {}
 
--- TODO: Resolve all health [:checkhealth()] errors/warnings
+-- TODO: Resolve all health [:checkhealth()] warnings
 
 function M.setup()
   -- Indicate first time installation

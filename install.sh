@@ -1,6 +1,8 @@
 #!/user/bin/sh
 
 # TODO: This script could probably use some work...
+# TODO: Automatically install all necessary packages for Neovim health
+# checks to pass (nodejs, npm, etc)
 
 # Update and upgrade packages
 echo "Update and upgrade packages..."
