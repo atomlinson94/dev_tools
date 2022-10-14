@@ -20,17 +20,21 @@ opt.expandtab = true
 -- TODO: Revisit whether this should be true/false
 --opt.hidden = true
 
--- Define general behavior
+-- Remap leader and local leader to <Space>
+api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
+g.mapleader = " "
+g.maplocalleader = " "
+
 opt.termguicolors = true -- Enable colors in terminal
-opt.hlsearch = true --Set highlight on search
-opt.number = true --Make line numbers default
-opt.relativenumber = true --Make relative number default
-opt.mouse = "" --Disable mouse for all modes
-opt.breakindent = true --Enable break indent
-opt.undofile = true --Save undo history
-opt.ignorecase = true --Case insensitive searching unless /C or capital in search
+opt.hlsearch = true -- Set highlight on search
+opt.number = true -- Make line numbers default
+opt.relativenumber = true -- Make relative number default
+opt.mouse = "" -- Disable mouse mode
+opt.breakindent = true -- Enable break indent
+opt.undofile = true -- Save undo history
+opt.ignorecase = true -- Case insensitive searching unless /C or capital in search
 opt.smartcase = true -- Smart case
-opt.updatetime = 250 --Decrease update time
+opt.updatetime = 200 -- Decrease update time
 opt.signcolumn = "yes" -- Always show sign column
 opt.clipboard = "unnamedplus" -- Access system clipboard
 
@@ -43,7 +47,7 @@ vim.cmd [[
 ]]
 
 -- Time in milliseconds to wait for a mapped sequence to complete.
-opt.timeoutlen = 200
+opt.timeoutlen = 300
 
 -- Define file search behavior
 opt.path:remove "/usr/include"

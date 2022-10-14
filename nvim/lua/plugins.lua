@@ -1,13 +1,16 @@
 local M = {}
 
--- TODO: Clear all health errors/warnings
-
 function M.setup()
   -- Indicate first time installation
   local packer_bootstrap = false
 
   -- packer.nvim configuration
   local conf = {
+    profile = {
+      enable = true,
+      threshold = 0, -- Amount in ms that a plugins load time must be over for it to be included in the profile
+    },
+
     display = {
       open_fn = function()
         return require("packer.util").float { border = "rounded" }
@@ -38,29 +41,14 @@ function M.setup()
   local function plugins(use)
     use { "wbthomason/packer.nvim" }
 
-    -- TODO: Figure out plugin compile/install weirdness
-    -- TODO: Look into optional plugins
-
-    -- TODO: Find better color scheme
     -- Colorscheme
     use {
-      "EdenEast/nightfox.nvim",
+      "sainnhe/everforest",
       config = function()
-        vim.cmd "colorscheme carbonfox"
+        vim.cmd "colorscheme everforest"
       end,
     }
 
-    -- Nvim web dev icons
-    -- TODO: Download Nerd Font first
-    use {
-      "kyazdani42/nvim-web-devicons",
-      module = "nvim-web-devicons",
-      config = function()
-        require("nvim-web-devicons").setup({ default = true })
-      end,
-    }
-
-    -- TODO: Find better startup screen
     -- Startup screen
     use {
       "goolord/alpha-nvim",
@@ -69,89 +57,99 @@ function M.setup()
       end,
     }
 
-    -- TODO: Add git plugin
+    -- Git
+    use {
+      "TimUntersberger/neogit",
+      cmd = "Neogit",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require("config.neogit").setup()
+      end,
+    }
 
     -- WhichKey
     use {
-       "folke/which-key.nvim",
-       config = function()
-         require("config.whichkey").setup()
-       end,
+      "folke/which-key.nvim",
+      event = "VimEnter",
+      config = function()
+        require("config.whichkey").setup()
+      end,
     }
 
-    -- Treesitter
-    -- TODO: Add additional configuration
+    -- IndentLine
     use {
-      "nvim-treesitter/nvim-treesitter",
+      "lukas-reineke/indent-blankline.nvim",
+      event = "BufReadPre",
+      config = function()
+        require("config.indentblankline").setup()
+      end,
+    }
+
+    -- Better icons
+    use {
+      "kyazdani42/nvim-web-devicons",
+      module = "nvim-web-devicons",
+      config = function()
+        require("nvim-web-devicons").setup { default = true }
+      end,
+    }
+
+    -- Markdown
+    use {
+      "iamcco/markdown-preview.nvim",
+      cmd = { "MarkdownPreview" },
+      run = function()
+        vim.fn["mkdp#util#install"]()
+      end,
+      ft = "markdown",
+    }
+
+    -- Status line
+    use {
+      "nvim-lualine/lualine.nvim",
+      event = "VimEnter",
+      config = function()
+        require("config.lualine").setup()
+      end,
+      requires = { "nvim-web-devicons" },
     }
 
     -- File explorer
     use {
-     "kyazdani42/nvim-tree.lua",
-     requires = {
-       "kyazdani42/nvim-web-devicons",
-     },
-     cmd = { "NvimTreeToggle", "NvimTreeClose" },
-       config = function()
-         require("config.nvimtree").setup()
-       end,
-    }
-
-    -- TODO: Figure out how to add vim commands
-    -- TODO: Figure out why slow (add packer profiling?)local
-    -- TODO: Figure out completion weirdness
-    -- Completion
-    use {
-      "hrsh7th/nvim-cmp",
+      "kyazdani42/nvim-tree.lua",
+      cmd = { "NvimTreeToggle", "NvimTreeClose" },
       config = function()
-        require("config.cmp").setup()
+        require("config.nvimtree").setup()
       end,
-      wants = { "LuaSnip" },
       requires = {
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-        "hrsh7th/cmp-nvim-lua",
-        "ray-x/cmp-treesitter",
-        "hrsh7th/cmp-cmdline",
-        "saadparwaiz1/cmp_luasnip",
-        "hrsh7th/cmp-calc",
-        "f3fora/cmp-spell",
-        "hrsh7th/cmp-emoji",
-        "hrsh7th/cmp-nvim-lsp-signature-help",
-        -- "hrsh7th/cmp-calc",
-        -- "f3fora/cmp-spell",
-        -- "hrsh7th/cmp-emoji",
-        {
-          "L3MON4D3/LuaSnip",
-          wants = "friendly-snippets",
-          config = function()
-            require("config.luasnip").setup()
-          end,
-        },
-        "rafamadriz/friendly-snippets",
+        "kyazdani42/nvim-web-devicons",
       },
+
     }
 
-    -- Auto pairs
+    -- User interface
     use {
-      "windwp/nvim-autopairs",
-      wants = "nvim-treesitter",
-      module = { "nvim-autopairs.completion.cmp", "nvim-autopairs" },
+      "stevearc/dressing.nvim",
+      event = "BufEnter",
       config = function()
-        require("config.autopairs").setup()
+        require("dressing").setup {
+          select = {
+            backend = { "telescope", "builtin" },
+          },
+        }
       end,
     }
 
-    -- TODO: Figure out cached git files don't show up
-    -- TODO: Figure out how to jump between git repositories
     -- Fuzzy file search
     use {
       "nvim-telescope/telescope.nvim",
+      opt = true,
       config = function()
         require("config.telescope").setup()
       end,
       cmd = { "Telescope" },
       module = "telescope",
+      keys = { "<leader>f", "<leader>p" },
       wants = {
         "plenary.nvim",
         "popup.nvim",
@@ -180,17 +178,110 @@ function M.setup()
     -- LSP
     use {
       "neovim/nvim-lspconfig",
-      opt = true,
-      event = "BufReadPre",
-      wants = { "nvim-lsp-installer", "lsp_signature.nvim", "cmp-nvim-lsp" },
+      wants = { "nvim-lsp-installer", "cmp-nvim-lsp", "neodev.nvim", "vim-illuminate" },
       config = function()
         require("config.lsp").setup()
       end,
       requires = {
         "williamboman/nvim-lsp-installer",
         "ray-x/lsp_signature.nvim",
-        "hrsh7th/cmp-nvim-lsp",
+        "folke/neodev.nvim",
       },
+    }
+
+    -- Treesitter
+    use {
+      "nvim-treesitter/nvim-treesitter",
+      opt = true,
+      event = "BufRead",
+      run = ":TSUpdate",
+      config = function()
+        require("config.treesitter").setup()
+      end,
+      requires = {
+        { "nvim-treesitter/nvim-treesitter-textobjects" },
+      },
+    }
+
+    -- Buffer line
+    use {
+      "akinsho/nvim-bufferline.lua",
+      event = "BufReadPre",
+      wants = "nvim-web-devicons",
+      config = function()
+        require("config.bufferline").setup()
+      end,
+    }
+
+    -- Completion
+    use {
+      "hrsh7th/nvim-cmp",
+      config = function()
+        require("config.cmp").setup()
+      end,
+      wants = { "LuaSnip" },
+      requires = {
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-nvim-lua",
+        "ray-x/cmp-treesitter",
+        "hrsh7th/cmp-cmdline",
+        "saadparwaiz1/cmp_luasnip",
+        "hrsh7th/cmp-calc",
+        "f3fora/cmp-spell",
+        "hrsh7th/cmp-emoji",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-nvim-lsp-signature-help",
+        {
+          "L3MON4D3/LuaSnip",
+          wants = "friendly-snippets",
+          config = function()
+            require("config.luasnip").setup()
+          end,
+        },
+        "rafamadriz/friendly-snippets",
+        disable = false,
+      },
+    }
+
+    -- Auto pairs
+    use {
+      "windwp/nvim-autopairs",
+      wants = "nvim-treesitter",
+      module = { "nvim-autopairs.completion.cmp", "nvim-autopairs" },
+      config = function()
+        require("config.autopairs").setup()
+      end,
+    }
+
+    -- End wise
+    use {
+      "RRethy/nvim-treesitter-endwise",
+      wants = "nvim-treesitter",
+      event = "InsertEnter",
+    }
+
+    -- trouble.nvim
+    use {
+      "folke/trouble.nvim",
+      event = "BufReadPre",
+      wants = "nvim-web-devicons",
+      cmd = { "TroubleToggle", "Trouble" },
+      config = function()
+        require("trouble").setup {
+          use_diagnostic_signs = true,
+        }
+      end,
+    }
+
+    -- lspsaga.nvim
+    use {
+      "tami5/lspsaga.nvim",
+      event = "VimEnter",
+      cmd = { "Lspsaga" },
+      config = function()
+        require("lspsaga").setup {}
+      end,
     }
 
     if packer_bootstrap then

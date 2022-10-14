@@ -2,22 +2,22 @@ local M = {}
 
 local servers = {
   clangd = {},
-  gopls = {},
+--  gopls = {},
   html = {},
   jsonls = {},
   pyright = {},
   rust_analyzer = {},
-  sumneko_lua = {},
+  sumneko_lua = {
+    settings = {
+      Lua = {
+        completion = {
+          callSnippet = "Replace"
+        }
+      }
+    }
+  },
   tsserver = {},
   vimls = {},
-}
-
-local lsp_signature = require "lsp_signature"
-lsp_signature.setup {
-  bind = true,
-  handler_opts = {
-    border = "rounded",
-  },
 }
 
 local function on_attach(client, bufnr)
@@ -31,9 +31,13 @@ local function on_attach(client, bufnr)
 
   -- Configure key mappings
   require("config.lsp.keymaps").setup(client, bufnr)
+
+  -- Configure highlighting
+  require("config.lsp.highlighting").setup(client)
 end
 
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()) -- for nvim-cmp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities) -- for nvim-cmp
 
 local opts = {
   on_attach = on_attach,
@@ -42,6 +46,9 @@ local opts = {
     debounce_text_changes = 150,
   },
 }
+
+-- Setup LSP handlers
+require("config.lsp.handlers").setup()
 
 function M.setup()
   require("config.lsp.installer").setup(servers, opts)
