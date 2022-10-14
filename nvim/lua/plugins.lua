@@ -1,5 +1,7 @@
 local M = {}
 
+-- TODO: Resolve all health [:checkhealth()] errors/warnings
+
 function M.setup()
   -- Indicate first time installation
   local packer_bootstrap = false
