@@ -43,9 +43,10 @@ function M.setup()
 
     -- Colorscheme
     use {
-      "EdenEast/nightfox.nvim",
+
+      "folke/tokyonight.nvim",
       config = function()
-        vim.cmd "colorscheme carbonfox"
+        vim.cmd "colorscheme tokyonight-storm"
       end,
     }
 
