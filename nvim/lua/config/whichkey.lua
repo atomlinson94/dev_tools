@@ -57,8 +57,8 @@ function M.setup()
       ["D"] = { "<cmd>%bd|e#|bd#<cr>", "Delete all buffers" },
       ["f"] = { "<cmd>ls<cr>:b<space>", "Find and open buffer" },
       ["n"] = { ":edit<Space>", "Open new buffer" },
-      ["k"] = { "<cmd>bprev<cr>", "Switch to previous buffer" },
-      ["j"] = { "<cmd>bnext<cr>", "Switch to next buffer" },
+      ["h"] = { "<cmd>bprev<cr>", "Switch to previous buffer" },
+      ["l"] = { "<cmd>bnext<cr>", "Switch to next buffer" },
     },
 
     ["z"] = {
