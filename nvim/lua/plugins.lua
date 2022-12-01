@@ -287,6 +287,16 @@ function M.setup()
       end,
     }
 
+    -- leap.nvim
+    use {
+      "ggandor/leap.nvim",
+      keys = { "s", "S" },
+      config = function()
+        local leap = require "leap"
+        leap.set_default_keymaps()
+      end,
+    }
+
     if packer_bootstrap then
       print "Restart Neovim required after installation!"
       require("packer").sync()
