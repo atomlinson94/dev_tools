@@ -143,6 +143,11 @@ function M.setup()
       end,
     }
 
+    use {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      run = 'make',
+    }
+
     -- Fuzzy file search
     use {
       "nvim-telescope/telescope.nvim",
@@ -156,7 +161,6 @@ function M.setup()
       wants = {
         "plenary.nvim",
         "popup.nvim",
-        "telescope-fzf-native.nvim",
         "telescope-project.nvim",
         "telescope-repo.nvim",
         "telescope-file-browser.nvim",
@@ -165,7 +169,7 @@ function M.setup()
       requires = {
         "nvim-lua/popup.nvim",
         "nvim-lua/plenary.nvim",
-        { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+        "nvim-telescope/telescope-fzf-native.nvim",
         "nvim-telescope/telescope-project.nvim",
         "cljoly/telescope-repo.nvim",
         "nvim-telescope/telescope-file-browser.nvim",
