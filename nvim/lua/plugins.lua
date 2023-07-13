@@ -301,7 +301,17 @@ function M.setup()
       end,
     }
 
-    if packer_bootstrap then
+    -- marks.nvim
+    use {
+      "chentoast/marks.nvim",
+    }
+
+    -- Jupyter Ascending
+    use {
+      "untitled-ai/jupyter_ascending.vim"
+    }
+
+   if packer_bootstrap then
       print "Restart Neovim required after installation!"
       require("packer").sync()
     end
