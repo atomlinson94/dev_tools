@@ -20,9 +20,8 @@ function M.setup()
   }
 
   local mappings = {
-    -- TODO: Find better solution for vim commands
     ["w"] = { "<Cmd>w<CR>", "Save" },
-    ["q"] = { "<Cmd>q!<CR>", "Quit" },
+    ["q"] = { "<Cmd>q<CR>", "Quit" },
     ["x"] = { "<Cmd>x<CR>", "Save and quit" },
 
     ["t"] = {

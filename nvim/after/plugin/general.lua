@@ -17,8 +17,7 @@ opt.softtabstop = 4
 opt.expandtab = true
 
 -- Define buffer behavior
--- TODO: Revisit whether this should be true/false
---opt.hidden = true
+opt.hidden = false
 
 -- Remap leader and local leader to <Space>
 api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
