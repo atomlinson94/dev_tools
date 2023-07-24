@@ -72,13 +72,6 @@ function M.setup()
       ["<C-e>"] = cmp.mapping { i = cmp.mapping.close(), c = cmp.mapping.close() },
       ["<CR>"] = cmp.mapping {
         i = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, select = false },
-        c = function(fallback)
-          if cmp.visible() then
-            cmp.confirm { behavior = cmp.ConfirmBehavior.Replace, select = false }
-          else
-            fallback()
-          end
-        end,
       },
       ["<Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
