@@ -39,7 +39,7 @@ function M.setup()
   local cmp = require "cmp"
 
   cmp.setup {
-    completion = { completeopt = "menu,menuone,noinsert", keyword_length = 1 },
+    preselect = cmp.PreselectMode.None,
     experimental = { native_menu = false, ghost_text = false },
     snippet = {
       expand = function(args)
