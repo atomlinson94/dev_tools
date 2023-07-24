@@ -304,6 +304,9 @@ function M.setup()
     -- marks.nvim
     use {
       "chentoast/marks.nvim",
+      config = function()
+        require("marks").setup {}
+      end,
     }
 
     -- Jupyter Ascending
