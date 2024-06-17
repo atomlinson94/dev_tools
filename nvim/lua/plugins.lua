@@ -183,14 +183,14 @@ function M.setup()
     -- LSP
     use {
       "neovim/nvim-lspconfig",
-      wants = { "nvim-lsp-installer", "cmp-nvim-lsp", "neodev.nvim", "vim-illuminate" },
+      wants = { "mason.nvim", "mason-lspconfig.nvim", "vim-illuminate" },
       config = function()
         require("config.lsp").setup()
       end,
       requires = {
-        "williamboman/nvim-lsp-installer",
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
         "ray-x/lsp_signature.nvim",
-        "folke/neodev.nvim",
       },
     }
 

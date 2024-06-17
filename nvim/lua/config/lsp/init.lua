@@ -1,16 +1,5 @@
 local M = {}
 
-local servers = {
-  clangd = {},
---  gopls = {},
-  html = {},
-  jsonls = {},
-  pyright = {},
-  rust_analyzer = {},
-  tsserver = {},
-  vimls = {},
-}
-
 local function on_attach(client, bufnr)
   -- Enable completion triggered by <C-X><C-O>
   -- See `:help omnifunc` and `:help ins-completion` for more information.
@@ -42,7 +31,28 @@ local opts = {
 require("config.lsp.handlers").setup()
 
 function M.setup()
-  require("config.lsp.installer").setup(servers, opts)
+  require("mason").setup {
+    ui = {
+      icons = {
+        package_installed = "✓"
+      }
+    }
+  }
+  -- TODO(atomlinson@anduril.com): Solve delay for LSP to load on first opening a buffer
+  require("mason-lspconfig").setup {
+    ensure_installed = {
+      "clangd",
+      "lua_ls",
+      "pyright",
+      "rnix",
+      "rust_analyzer",
+    },
+    handlers = {
+      function(server_name)
+        require('lspconfig')[server_name].setup({})
+      end,
+    },
+  }
 end
 
 return M
