@@ -55,13 +55,6 @@ then
     echo "alias nv='XDG_DATA_HOME=~/.local/share XDG_CONFIG_HOME=~/.config nvim'" >> ~/.bashrc
 fi
 
-if [ ! -d "$HOME/.config/nvim" ]
-then
-    mkdir $HOME/.config/nvim/
-fi
-
-stow --restow --target=$HOME/.config/nvim nvim
-
 # Reload .bashrc
 echo "Reload .bashrc..."
 source $HOME/.bashrc
